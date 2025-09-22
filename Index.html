@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainrot Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0a0015;
+            color: #fff;
+            font-family: 'Exo 2', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(155, 5, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 20%);
+            padding-bottom: 70px;
+        }
+        
+        /* Glitch effect for headings */
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff; }
+            20% { text-shadow: -2px 2px 0 #ff00ff, 2px -2px 0 #00ffff; }
+            40% { text-shadow: 2px -2px 0 #ff00ff, -2px 2px 0 #00ffff; }
+            60% { text-shadow: -2px -2px 0 #ff00ff, 2px 2px 0 #00ffff; }
+            80% { text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff; }
+            100% { text-shadow: -2px 2px 0 #ff00ff, 2px -2px 0 #00ffff; }
+        }
+        
+        /* Section styling */
+        section {
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Header and title */
+        header {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-transform: uppercase;
+            animation: glitch 1s infinite;
+            position: relative;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        /* Brainbot grid */
+        .brainbots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.2rem;
+            padding: 1rem;
+        }
+        
+        .brainbot-card {
+            background: rgba(20, 0, 40, 0.8);
+            border: 2px solid #ff00ff;
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-out;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+        }
+        
+        .brainbot-card:hover {
+            transform: translateY(-5px) rotate(2deg);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.5);
+            border-color: #00ffff;
+        }
+        
+        .brainbot-img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 0.8rem;
+            image-rendering: pixelated;
+        }
+        
+        .brainbot-name {
+            font-size: 0.9rem;
+            color: #00ffff;
+            margin-top: 0.5rem;
+            margin-bottom: 0.8rem;
+            min-height: 2.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Claim button */
+        .claim-btn {
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 0.6rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .claim-btn:hover {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            transform: scale(1.05);
+        }
+        
+        /* Live Claiming Bar */
+        .live-claiming-container {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            z-index: 90;
+            pointer-events: none;
+        }
+        
+        .live-claiming-bar {
+            background: rgba(128, 128, 128, 0.7); /* Grey transparent background */
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: white; /* White text */
+            font-size: 0.8rem;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .claim-message {
+            opacity: 0;
+            position: absolute;
+            width: 90%;
+            text-align: center;
+            animation: messageSlide 4s infinite;
+        }
+        
+        @keyframes messageSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            90% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 255, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 0, 255, 0.5); }
+        }
+        
+        /* Section titles */
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ff00ff;
+            animation: glitch 2s infinite;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* Claim Process Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #0a0015, #1a0035);
+            border: 3px solid #ff00ff;
+            border-radius: 15px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
+            animation: modalFade 0.5s ease-out;
+        }
+        
+        @keyframes modalFade {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal h3 {
+            color: #00ffff;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .modal p {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .username-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .confirm-btn {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #000;
+        }
+        
+        .cancel-btn {
+            background: rgba(255, 0, 255, 0.2);
+            color: #fff;
+            border: 2px solid #ff00ff;
+        }
+        
+        .modal-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Progress bar styles */
+        .progress-container {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            border: 2px solid #00ffff;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            border-radius: 8px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #00ffff;
+        }
+        
+        /* Claim process steps */
+        .claim-process {
+            display: none;
+            text-align: center;
+        }
+        
+        .claim-process img {
+            max-width: 150px;
+            margin: 1rem auto;
+            display: block;
+            image-rendering: pixelated;
+        }
+        
+        .process-text {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #00ffff;
+            line-height: 1.5;
+        }
+        
+        .user-count {
+            color: #ff00ff;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        .verify-btn {
+            background: linear-gradient(135deg, #ff0000, #ff00ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 0, 25, 0.9);
+            border-top: 2px solid #ff00ff;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .nav-btn.active {
+            color: #ff00ff;
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 400px) {
+            .brainbots-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 1rem;
+                padding: 0.8rem;
+            }
+            
+            .brainbot-name {
+                font-size: 0.8rem;
+            }
+            
+            .claim-btn {
+                font-size: 0.7rem;
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Brainrot Universe</h1>
+    </header>
+    
+    <section id="brainbots">
+        <h2>Brainbots Collection</h2>
+        <div class="brainbots-grid" id="brainbots-grid">
+            <!-- Brainbots will be inserted here by JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Live Claiming Bar -->
+    <div class="live-claiming-container" id="liveClaimingContainer">
+        <div class="live-claiming-bar" id="liveClaimingBar">
+            <!-- Claim messages will be inserted here by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Username Modal -->
+    <div class="modal" id="usernameModal">
+        <div class="modal-content">
+            <h3>Enter Your Username</h3>
+            <p>Please enter your username to claim your brainrot.</p>
+            <input type="text" class="username-input" id="usernameInput" placeholder="YourUsername">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" id="cancelBtn">Cancel</button>
+                <button class="modal-btn confirm-btn" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Claim Process Modal -->
+    <div class="modal" id="claimProcessModal">
+        <div class="modal-content">
+            <div id="connectingStep" class="claim-process">
+                <h3>Connecting to Steal A</h3>
+                <p class="process-text">Brainrot servers...</p>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar1"></div>
+                </div>
+                <p class="user-count">15,847 users claimed brainrot today!</p>
+            </div>
+            
+            <div id="generatingStep" class="claim-process">
+                <h3>User found! Preparing</h3>
+                <p class="process-text">to generate brainrot...</p>
+                <div class="progress-text" id="progressText2">30%</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar2"></div>
+                </div>
+                <p class="process-text">Generating premium brainrot items...</p>
+                <img id="selectedBrainrotImage" src="" alt="Selected Brainrot">
+            </div>
+            
+            <div id="verificationStep" class="claim-process">
+                <h3>ALMOST COMPLETE...</h3>
+                <div class="progress-text" id="progressText3">95%</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar3"></div>
+                </div>
+                <p class="process-text">URGENT: Human verification required to finish claiming your brainrot!</p>
+                <p class="process-text">Limited time only!</p>
+                <button class="verify-btn" id="verifyBtn">VERIFY & CLAIM</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="#brainbots" class="nav-btn active">
+            <i class="fas fa-robot"></i>
+            <span>Brainbots</span>
+        </a>
+    </div>
+
+    <script>
+        // Brainbots data
+        const brainbots = [
+            { name: "Strawberry Elephant", image: "https://i.postimg.cc/T31BR3xK/Early-Strawberrry-Elephant-removebg-preview.png" },
+            { name: "MARIACHI CORAZONI", image: "https://i.postimg.cc/SKyW70d5/MARIACHI-CORAZONI.png" },
+            { name: "Tictac Sahur", image: "https://i.postimg.cc/BQSzLmvm/tictacsahur.png" },
+            { name: "To to to Sahur", image: "https://i.postimg.cc/gj2n7dQX/Screenshot-2025-09-20-at-18-51-02-removebg-preview.png" },
+            { name: "Los Tacoritas", image: "https://i.postimg.cc/Wz0qrSBS/unnamed-removebg-preview.png" },
+            { name: "La Sahur Combinasion", image: "https://static.wikia.nocookie.net/stealabr/images/e/eb/Sahuria.png" },
+            { name: "Tacorita Bicicleta", image: "https://static.wikia.nocookie.net/stealabr/images/9/93/Tacorita_Bicicleta_.png" },
+            { name: "La Extinct Grande", image: "https://i.postimg.cc/JhcWxbXY/Gemini-Generated-Image-pdj2rppdj2rppdj2-removebg-preview.png" },
+            { name: "Extinct Matteo", image: "https://static.wikia.nocookie.net/stealabr/images/4/42/Lil_pump.png" },
+            { name: "Las Sis", image: "https://i.postimg.cc/8zTkrrdS/Gemini-Generated-Image-bwlseabwlseabwls-removebg-preview.png" },
+            { name: "Los Chicleteiritas", image: "https://i.postimg.cc/tCcgKsy5/Loschic-removebg-preview.png" },
+            { name: "67", image: "https://i.postimg.cc/mgCbpm5B/Gemini-Generated-Image-8hzesv8hzesv8hze-removebg-preview.png" },
+            { name: "Los Bros", image: "https://i.postimg.cc/261FWmT1/Untitled-design-removebg-preview.png" },
+            { name: "La Karkerkar Combinasion", image: "https://i.postimg.cc/mrrPFB9L/La-Karkerkar-Combinazione-removebg-preview.png" },
+            { name: "tralaledon", image: "https://i.postimg.cc/sg9qh6xN/Tralaledon.png" },
+            { name: "Garama and Madundung", image: "https://static.wikia.nocookie.net/stealabr/images/e/ee/Garamadundung.png" },
+            { name: "Guerriro Digitale", image: "https://i.postimg.cc/DfqRFgNq/Whats-App-Image-2025-08-31-at-2-43-54-PM-removebg-preview.png" },
+            { name: "Secret Item Beta", image: "https://static.wikia.nocookie.net/stealabr/images/c/c8/La_Supreme_Combinasion.png" },
+            { name: "La Grande Combinasion", image: "https://static.wikia.nocookie.net/stealabr/images/9/9a/Playboi_carti.png" },
+            { name: "Spaghetti Tualetti", image: "https://static.wikia.nocookie.net/stealabr/images/1/11/9FF4F5C6-6AD8-41A3-8E19-FFD9261102BC-removebg-preview.png" },
+            { name: "La Supreme Combinasion", image: "https://static.wikia.nocookie.net/stealabr/images/c/c8/La_Supreme_Combinasion.png" },
+            { name: "job job job sahur", image: "https://static.wikia.nocookie.net/stealabr/images/0/03/Job.webp" },
+            { name: "Nooo My Hotspot", image: "https://i.ibb.co/XfT8X1tq/no-my-hotspot-removebg-preview.png" },
+            { name: "Esok Sekolah", image: "https://i.ibb.co/7xxDNp36/esok-removebg-preview.png" },
+            { name: "Karkerkar kurkur", image: "https://static.wikia.nocookie.net/stealabr/images/d/d9/Karkerkar_kurkur.png" },
+            { name: "dragon cannelloni", image: "https://tr.rbxcdn.com/180DAY-b14aa19aee59dcd2e3fdc474bc8ed42e/420/420/Hat/Webp/noFilter" },
+            { name: "Los Hotspotsitos", image: "https://i.ibb.co/1VK1KKp/image-removebg-preview-2.png" }
+        ];
+
+        // Claim messages
+        const claimMessages = [
+            "sicoro33 just claimed!",
+            "brainrot_god22 unlocked Strawberry Elephant!",
+            "xXhotspotXx grabbed Nooo My Hotspot!",
+            "taco_lord77 just claimed MARIACHI CORAZONI!",
+            "glitchy_kid42 now owns Spaghetti Tualetti!",
+            "yo_sahur99 claimed Tictac Sahur!",
+            "los_broskito picked up Los Bros!",
+            "dragonSlayer_88 got Dragon Cannelloni!",
+            "sisqueen101 claimed Las Sis!",
+            "matteo_extincted took Extinct Matteo!",
+            "shadowbyte19 owns Guerriro Digitale now!",
+            "gummybear44 just claimed Los Chicleteiritas!",
+            "supreme_dreams grabbed La Supreme Combinasion!",
+            "karkerkar_lover12 got Karkerkar Kurkur!",
+            "trala_donX just unlocked Tralaledon!",
+            "garamazing claimed Garama and Madundung!",
+            "beta_tester9 found Secret Item Beta!",
+            "loshotspotito claimed Los Hotspotsitos!",
+            "taco_bike99 grabbed Tacorita Bicicleta!",
+            "combo_master claimed La Grande Combinasion!",
+            "pink_sauce88 owns La Sahur Combinasion!",
+            "extincted_boi just got La Extinct Grande!",
+            "67rocks claimed 67!",
+            "lol_hotspotter claimed Nooo My Hotspot!",
+            "school_is_tmrw got Esok Sekolah!",
+            "tortillaKing77 just claimed Los Tacoritas!",
+            "sahur_time claimed To to to Sahur!",
+            "big_elephant grabbed Strawberry Elephant!",
+            "corazoneroX just claimed MARIACHI CORAZONI!",
+            "pixelated_guy claimed Spaghetti Tualetti!",
+            "sneaky_frog123 owns La Karkerkar Combinasion!",
+            "memelord98 picked up job job job sahur!",
+            "hotspotz0 claimed Los Hotspotsitos!",
+            "donut_crasher took Los Chicleteiritas!",
+            "ghost_carti claimed La Grande Combinasion!",
+            "tiny67 claimed 67!",
+            "shadow_runner claimed Guerriro Digitale!",
+            "esok_master88 grabbed Esok Sekolah!",
+            "kurkur_kid999 owns Karkerkar Kurkur!",
+            "draconic69 got Dragon Cannelloni!",
+            "madundungus claimed Garama and Madundung!",
+            "secretiveX found Secret Item Beta!",
+            "combo_supreme claimed La Supreme Combinasion!",
+            "los_tacoman owns Los Tacoritas!",
+            "sahur_bro just claimed To to to Sahur!",
+            "rotbrain11 claimed Tictac Sahur!",
+            "matteo_gone claimed Extinct Matteo!",
+            "sisqueen22 just unlocked Las Sis!",
+            "tacoSpin claimed Tacorita Bicicleta!"
+        ];
+
+        // Function to render brainbots
+        function renderBrainbots() {
+            const grid = document.getElementById('brainbots-grid');
+            grid.innerHTML = '';
+            
+            brainbots.forEach(bot => {
+                const card = document.createElement('div');
+                card.className = 'brainbot-card';
+                
+                const img = document.createElement('img');
+                img.src = bot.image;
+                img.alt = bot.name;
+                img.className = 'brainbot-img';
+                
+                const name = document.createElement('div');
+                name.textContent = bot.name;
+                name.className = 'brainbot-name';
+                
+                const claimBtn = document.createElement('button');
+                claimBtn.className = 'claim-btn';
+                claimBtn.innerHTML = '<i class="fas fa-hand-point-up"></i> Claim';
+                claimBtn.dataset.botName = bot.name;
+                claimBtn.dataset.botImage = bot.image;
+                
+                claimBtn.addEventListener('click', function() {
+                    openUsernameModal(bot.name, bot.image);
+                });
+                
+                card.appendChild(img);
+                card.appendChild(name);
+                card.appendChild(claimBtn);
+                grid.appendChild(card);
+            });
+        }
+
+        // Function to initialize the live claiming bar
+        function initLiveClaimingBar() {
+            const claimingBar = document.getElementById('liveClaimingBar');
+            claimingBar.innerHTML = ''; // Clear any existing messages
+            
+            // Add all claim messages to the bar with proper delays
+            claimMessages.forEach((message, index) => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'claim-message';
+                messageElement.textContent = message;
+                messageElement.style.animationDelay = `${index * 4}s`;
+                claimingBar.appendChild(messageElement);
+            });
+        }
+
+        // Username modal functions
+        function openUsernameModal(botName, botImage) {
+            const modal = document.getElementById('usernameModal');
+            modal.style.display = 'flex';
+            modal.dataset.botName = botName;
+            modal.dataset.botImage = botImage;
+        }
+
+        function closeUsernameModal() {
+            const modal = document.getElementById('usernameModal');
+            modal.style.display = 'none';
+            document.getElementById('usernameInput').value = '';
+        }
+
+        function startClaimProcess(username, botName, botImage) {
+            // Close username modal
+            closeUsernameModal();
+            
+            // Show claim process modal
+            const processModal = document.getElementById('claimProcessModal');
+            processModal.style.display = 'flex';
+            
+            // Reset all steps
+            document.getElementById('connectingStep').style.display = 'none';
+            document.getElementById('generatingStep').style.display = 'none';
+            document.getElementById('verificationStep').style.display = 'none';
+            
+            // Show connecting step
+            document.getElementById('connectingStep').style.display = 'block';
+            
+            // Set the selected brainrot image
+            document.getElementById('selectedBrainrotImage').src = botImage;
+            
+            // Start the progress animation for step 1
+            const progressBar1 = document.getElementById('progressBar1');
+            progressBar1.style.width = '100%';
+            
+            // After 3 seconds, move to generating step
+            setTimeout(() => {
+                document.getElementById('connectingStep').style.display = 'none';
+                document.getElementById('generatingStep').style.display = 'block';
+                
+                // Animate progress for step 2
+                const progressBar2 = document.getElementById('progressBar2');
+                const progressText2 = document.getElementById('progressText2');
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 1;
+                    progressBar2.style.width = progress + '%';
+                    progressText2.textContent = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // After completion, move to verification step
+                        setTimeout(() => {
+                            document.getElementById('generatingStep').style.display = 'none';
+                            document.getElementById('verificationStep').style.display = 'block';
+                            
+                            // Animate progress for step 3 with fluctuation
+                            const progressBar3 = document.getElementById('progressBar3');
+                            const progressText3 = document.getElementById('progressText3');
+                            
+                            // Set initial progress to 94% and don't let it increase
+                            let progress3 = 94;
+                            progressBar3.style.width = progress3 + '%';
+                            progressText3.textContent = progress3 + '%';
+                            
+                            // Simulate fluctuation between 93-94% (not increasing beyond 94%)
+                            const fluctuate = setInterval(() => {
+                                progress3 = 93 + Math.floor(Math.random() * 2); // Only 93 or 94
+                                progressBar3.style.width = progress3 + '%';
+                                progressText3.textContent = progress3 + '%';
+                            }, 800);
+                            
+                        }, 1000);
+                    }
+                }, 30);
+            }, 3000);
+        }
+
+        function confirmUsername() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const botName = document.getElementById('usernameModal').dataset.botName;
+            const botImage = document.getElementById('usernameModal').dataset.botImage;
+            
+            if (username === '') {
+                alert('Please enter a username!');
+                return;
+            }
+            
+            // Start the claim process
+            startClaimProcess(username, botName, botImage);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBrainbots();
+            initLiveClaimingBar();
+            
+            // Modal event listeners
+            document.getElementById('cancelBtn').addEventListener('click', closeUsernameModal);
+            document.getElementById('confirmBtn').addEventListener('click', confirmUsername);
+            
+            // Close modal when clicking outside
+            document.getElementById('usernameModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeUsernameModal();
+                }
+            });
+            
+            // Verify button event listener - redirect to provided URL
+            document.getElementById('verifyBtn').addEventListener('click', function() {
+                window.location.href = 'https://verifyuser.org/cl/i/8dpexd';
+            });
+            
+            // Bottom navigation active state
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
